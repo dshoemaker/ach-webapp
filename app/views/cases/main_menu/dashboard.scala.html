@@ -1,0 +1,51 @@
+@(caseList: List[Reclamation])
+
+<link rel="stylesheet" media="screen" href='@routes.Assets.at("javascripts/DataTables/datatables.css")'>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/DataTables/datatables.min.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("javascripts/DataTables/datatable_handler.js")'></script>
+
+<table class="table table-bordered" id="dashboard-table">
+    <thead>
+        <tr>
+            <th>Open Date</th>
+            <th>Watch</th>
+            <th>Beneficiary Name</th>
+            <th>Total Amount</th>
+            <th>SLA</th>
+            <th>Days Open</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(ach_case <- caseList) {
+
+            <tr class="clickable-row" data-case-num=@ach_case.id>
+                <td>@ach_case.formatDate(ach_case.dateCreated)</td>
+                @if(ach_case.watchItem) {
+                    <td class="positive">Y</td>
+                } else {
+                    <td class="negative">N</td>
+                }
+                <td>@ach_case.beneficiaryName</td>
+                <td>@{"%.2f".format(ach_case.calculateTotalPayment)}</td>
+                <td>N/A</td>
+                <td>@ach_case.daysOpen</td>
+                <td>@ach_case.status.getValueOr</td>
+                <td>
+                    <button type="button" class="btn-warning btn-action" data-toggle="tooltip" data-placement="top" data-container="body" title="Edit Case"
+                        onclick="window.location='@routes.CaseController.editCase(ach_case.id)';">
+                        <span class="glyphicon glyphicon-edit"></span></button>
+                    <button type="button" class="btn-danger btn-action" data-toggle="tooltip" data-placement="top" data-container="body" title="Delete Case"
+                        onclick="del('@routes.CaseController.deleteCase(ach_case.id)');">
+                        <span class="glyphicon glyphicon-trash"></span></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="case-view-container"></div>
+
+@helper.javascriptRouter("jsCaseRoutes")(routes.javascript.CaseController.findCase)
+<script type="text/javascript" src="@routes.CaseController.jsCaseRoutes"></script>

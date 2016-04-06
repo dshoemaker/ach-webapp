@@ -1,0 +1,72 @@
+@(caseForm: play.data.Form[Reclamation])(caseType: String)(mode: String)(dateToday: String)
+@import views.html.common._
+@import helper._
+@import models._
+@import tags._
+
+    @implicitFieldConstructor = @{
+        b3.vertical.fieldConstructor
+    }
+
+    @main("New Case Info") {
+        <div class="page-header">
+            <h3>New Government Reclamation Case<span class="pull-right label label-primary">@BaseCase.Status.OPEN.getValueOr</span></h3>
+        </div>
+        <fieldset>
+        @b3.form(action = routes.CaseController.save(caseType, mode), 'id -> "new-case-form") {
+            @b3.hidden("status", BaseCase.Status.OPEN)
+            @b3.hidden("createdBy", User.getFull_name)
+
+            <div class="row">
+                <div class="col-md-4">
+                @b3.text(caseForm("caseType"),
+                    '_label -> "Case Type",
+                    'readOnly -> "readOnly",
+                    'value -> caseType)
+                </div>
+                @if(mode == "Editing") {
+                    @b3.hidden("id", caseForm("id").value())
+                    <button type="button" class="btn btn-warning vert-align-input" data-toggle="modal" data-target="#edit_case_type">
+                        <span class="glyphicon glyphicon-edit"></span> Change Case Type</button>
+                    <div id="edit_case_type" class="modal fade" role="dialog">
+                    @edit_warning_modal(caseForm("id").value())
+                    </div>
+                }
+            </div>
+
+            <div class="panel panel-primary subtype-panel">
+                <div class="panel-heading">Case Subtype<span class="col-right">* Indicates Required Field</span></div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                        @b3.select(caseForm("caseSubtype"),
+                            options = options(Reclamation.subTypeOptions),
+                            'id -> "subtype_selection",
+                            '_label -> "Subtype *",
+                            '_default -> "-- Select a Subtype --",
+                            'onchange -> "selectSubtype()")
+                        </div>
+                        <div class="col-md-4" id="datepicker_modal">
+                        @date_picker(caseForm("dateCreated"), '_label -> "Date *", 'value -> dateToday)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @reclamation_details_panel(caseForm)
+
+            <div class="form-group">
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-success btn-block">
+                        <span class="glyphicon glyphicon-check"></span> Save</button>
+                </div>
+                    <button type="button" class="btn btn-danger" onclick="window.location='@routes.CaseController.list()';" value="cancel">
+                        <span class="glyphicon glyphicon-remove"></span> Cancel</button>
+            </div>
+        }
+
+        </fieldset>
+
+    }
+
+

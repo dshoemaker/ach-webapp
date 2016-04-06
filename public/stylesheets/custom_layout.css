@@ -1,0 +1,120 @@
+
+body {
+    padding-top: 30px;
+}
+
+.inline-block-elmt {
+    display: inline-block;
+}
+.col-center {
+    text-align: center !important;
+}
+.col-right {
+    float: right;
+}
+
+.vert-align-input {
+    margin-top: 25px;
+}
+.positive {
+    font-weight: bold;
+    color: green;
+}
+.negative {
+    font-weight: bold;
+    color: red;
+}
+
+
+/* Buttons */
+
+.btn-menu-container {
+    padding: 20px;
+}
+.btn-menu {
+    padding: 10px;
+    background-color: #6A9A1F;
+    border-color: #6A9A1F;
+}
+.btn-menu:hover,
+.btn-menu:focus,
+.btn-menu:active,
+.btn-menu.active {
+    background-color: #5b851b;
+    border-color: #4d7016;
+}
+
+
+/* Modal Styles */
+
+.modal-header, .close {
+    background: linear-gradient(#555, #444);
+    color: #dd5;
+    text-align: center;
+    font-size: 30px;
+    padding: 25px 50px;
+}
+.modal-footer {
+    background-color: #EBEBEB;
+}
+
+
+/* Main Menu Tab Styles */
+
+.tab-content {
+    padding: 5px;
+}
+.nav-tabs > li > a{
+    background: linear-gradient(#265869, #193842);
+    color: white;
+    font-weight: bold;
+}
+.nav-tabs > li > a:hover {
+    background: linear-gradient( #33748A, #265869);
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus{
+    color: #265869;
+    background: linear-gradient(#C9C9C9, white);
+}
+
+
+/* Case View */
+
+.case-view-container {
+    margin-top: 20px;
+}
+.panel-warning > .panel-heading {
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    background: linear-gradient( #F9B84A, #ff9547);
+    border: 1px solid orange;
+}
+.panel-warning > .panel-body {
+    border: 2px solid orange;
+}
+.case-view-collapsible {
+    background: linear-gradient(#265869, #193842);
+    color: white;
+    padding: 10px;
+}
+
+
+/* File Drag & Drop */
+
+.drop_zone_container {
+    vertical-align: text-top;
+}
+.drop_zone {
+    width: 600px;
+    height: 80px;
+    border: 2px dashed #ccc;
+    color: #ccc;
+    line-height: 80px;
+    text-align: center;
+}
+.drop_zone.dragover {
+    border-color: #000;
+    color: #000;
+}

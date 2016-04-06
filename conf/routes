@@ -1,0 +1,30 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET             /                                       controllers.SessionController.newSession()
+
+# Case
+GET             /cases                                  controllers.CaseController.list()
+GET             /cases/new                              controllers.CaseController.addCase()
+GET             /cases/edit/:caseId                     controllers.CaseController.editCase(caseId: Integer)
+GET             /cases/find/:caseId                     controllers.CaseController.findCase(caseId: Integer)
+POST            /cases/save/:mode                       controllers.CaseController.save(caseType: String, mode:String)
+DELETE          /cases/del/:caseId                      controllers.CaseController.deleteCase(caseId: Integer)
+GET             /cases/del/:caseId                      controllers.CaseController.deleteCase(caseId: Integer)
+
+# Login
+GET             /login                                  controllers.SessionController.newSession()
+POST            /login                                  controllers.SessionController.create()
+# logout would normally be a DELETE request if sessions were stored in db
+GET             /logout                                 controllers.SessionController.destroy()
+
+# Map static resources from the /public folder to the /assets URL path
+GET             /assets/*file                           controllers.Assets.at(path="/public", file)
+GET             /vassets/*file                          controllers.Assets.versioned(path="/public", file:Asset)
+GET             /webjars/*file                          controllers.WebJarAssets.at(file)
+
+# Javascript Router for AJAX call
+GET            /cases/find/:caseId                      controllers.CaseController.findCase(caseId: Integer)
+GET            /jsCaseRoutes                            controllers.CaseController.jsCaseRoutes()

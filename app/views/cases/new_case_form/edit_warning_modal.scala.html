@@ -1,0 +1,26 @@
+@(caseID: String)
+
+    <!-- Modal -->
+
+<div class="modal-dialog">
+
+        <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" id="modal-close" data-dismiss="modal">&times;</button>
+            <h2 class="modal-title">Edit ACH Case</h2>
+        </div>
+        <div class="modal-body">
+            <p><b>Warning!</b>  To change the case type, you must delete the current case and create a new one of the desired type.</p>
+            <p>Do you wish to delete this case?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">
+                <span class="glyphicon glyphicon-remove"></span> Cancel</button>
+            <button type="button" method="delete" class="btn btn-warning pull-right"
+            onclick="window.location='@routes.CaseController.deleteCase(caseID.toInt)';">
+                <span class="glyphicon glyphicon-check"></span> Delete Case</button>
+        </div>
+    </div>
+
+</div>

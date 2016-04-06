@@ -1,0 +1,33 @@
+@(caseType: String)(mode: String)
+
+@import views.html.common._
+
+@implicitFieldConstructor = @{
+    b3.vertical.fieldConstructor
+}
+
+    @main("New Case Info") {
+        <div class="page-header">
+            <h3>New @caseType Case<span class="pull-right label label-primary">@BaseCase.Status.OPEN.getValueOr</span></h3>
+        </div>
+
+        <fieldset>
+        @b3.form(action = routes.CaseController.save(caseType, mode), 'id -> "new-case-form") {
+            <div class="panel panel-primary subtype-panel">
+                <div class="panel-heading">Stub Subtype<span class="col-right">* Indicates Required Field</span></div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>You selected a Case Type that is not currently handled.</h3>
+                            <p>This means you selected either POA, Reversals/Deletions, Returns, or
+                                Unresolved/Dishonored Returns.  Implementation of these case types do not fall
+                                within the scope of this project.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-danger" onclick="window.location='@routes.CaseController.list()';" value="cancel">
+                <span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        }
+        </fieldset>
+    }

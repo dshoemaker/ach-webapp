@@ -1,0 +1,143 @@
+@(caseForm: play.data.Form[Reclamation])
+
+@import tags._
+@import helper._
+@import models._
+
+@implicitFieldConstructor = @{
+    b3.vertical.fieldConstructor
+}
+
+<div class="panel panel-primary details-panel">
+    <div class="panel-heading">Case Details<span class="col-right">* Indicates Required Field</span></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-3">
+            @b3.checkbox(caseForm("watchItem"), '_text -> Html("<b>Watch Item </b><span class='glyphicon glyphicon-eye-open'></span>"))
+            </div>
+        </div>
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse1">
+                        Beneficiary Detail:
+                    </a></h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                            @b3.text(caseForm("beneficiaryName"), '_label -> "Beneficiary Name *")
+                            </div>
+                            <div class="col-md-3">
+                            @b3.text(caseForm("beneficiaryAcctNumber"), '_label -> "Beneficiary Acct # *")
+                            </div>
+                            <div class="col-md-2">
+                            @b3.text(caseForm("beneficiarySSN"), '_label -> "Beneficiary SSN", 'placeholder -> "XXX-XX-XXXX")
+                            </div>
+                            <div class="col-md-3">
+                            @b3.text(caseForm("beneficiaryCustId"), '_label -> "Beneficiary Customer ID")
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                            @date_picker(caseForm("dateOfDeath"), '_label -> "Date of Death*", 'placeholder -> "mm/dd/yyyy")
+                            </div>
+                            <div class="col-md-3">
+                            @date_picker(caseForm("dateCBAware"), '_label -> "Date CB became Aware*", 'placeholder -> "mm/dd/yyyy")
+                            </div>
+                        </div>
+                        <div class="row other-gov-benefits">
+                            <div class="col-md-3 vert-align-input">
+                            @b3.checkbox(caseForm("otherGovBenefits"), '_text -> Html("<b>Other Gov Benefits? *</b>"), 'id -> "other-benefits-checkbox")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse2">
+                        Payment Detail:
+                    </a></h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse in">
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-3">
+                            @b3.text(caseForm("paymentList[0].effectiveDate"), '_label -> "Effective Date *", 'class -> "pay_date_field", 'placeholder -> "mm/dd/yyyy")
+                            </div>
+                            <div class="col-md-3">
+                            @b3.text(caseForm("paymentList[0].amount"), '_label -> "Amount *")
+                            </div>
+                            @b3.button('class -> "btn btn-info vert-align-input add_pay_btn") {
+                                <span class="glyphicon glyphicon-plus"></span> Add }
+                        </div>
+
+                            <!-- Template for dynamically added payments -->
+                        <div class="row hide payment_clone" id="payment_template">
+                            <div class="col-md-3">
+                            @b3.text(caseForm("pay_date"), '_label -> "Effective Date *", 'class -> "pay_date_field", 'placeholder -> "mm/dd/yyyy")
+                            </div>
+                            <div class="col-md-3">
+                            @b3.text(caseForm("pay_amt"), '_label -> "Amount *")
+                            </div>
+                            @b3.button('class -> "btn btn-danger vert-align-input del_pay_btn") {
+                                <span class="glyphicon glyphicon-remove"></span> Remove }
+                        </div>
+
+                        <div class="dynamic_payments"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse3">
+                        Disposition/Status Detail:
+                    </a></h4>
+                </div>
+                <div id="collapse3" class="panel-collapse collapse in">
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                            @b3.select(caseForm("recoveryMethod"),
+                                options = options(Reclamation.recoveryMethodOptions()),
+                                'id -> "recovery_selection",
+                                '_label -> "Recovery Method *",
+                                '_default -> "-- Select a Recovery Method --")
+                            </div>
+                            <div class="col-md-2 vert-align-input">
+                            @b3.checkbox(caseForm("fullRecovery"), '_text -> Html("<b>Full Recovery</b>"))
+                            </div>
+                        </div>
+
+                        <div id="cashier-info-position"></div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                            @date_picker(caseForm("completedDate"), '_label -> "Completed Date *", 'placeholder -> "mm/dd/yyyy")
+                            </div>
+                            <div class="col-md-3">
+                            @date_picker(caseForm("verifiedDate"), '_label -> "Verified Date", 'placeholder -> "mm/dd/yyyy")
+                            </div>
+                            <div class="col-md-4">
+                            @b3.text(caseForm("verifiedBy"), '_label -> "Verified By", 'value -> User.getFull_name)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                            @b3.textarea(caseForm("additionalNotes"), '_label -> "Additional Notes",
+                                'placeholder -> "Enter any other relevant information here...")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

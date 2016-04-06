@@ -1,0 +1,49 @@
+@(caseForm: play.data.Form[BaseCase])
+
+@import html5.tags.html._
+
+@implicitFieldConstructor = @{
+    b3.vertical.fieldConstructor
+}
+
+    <!-- Modal -->
+
+<div class="modal-dialog">
+
+        <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" id="modal-close" data-dismiss="modal">&times;</button>
+            <h2 class="modal-title">New ACH Case</h2>
+        </div>
+        <div class="modal-body">
+            <fieldset id="case-type-form">
+            @b3.form(action = routes.CaseController.addCase(), 'id -> "case-type-form") {
+                <div class="form-stuff">
+                    <div class="col-md-8 col-md-offset-2">
+                    @select(caseForm("caseType"),
+                        options = options(BaseCase.typeOptions),
+                        'class -> "form-control",
+                        'id -> "type_selection",
+                        '_label -> "Case Type *",
+                        '_default -> "-- Select a Type --",
+                        '_showConstraints -> false)
+                    </div>
+                    <div class="col-md-8 col-md-offset-2">
+                        <button id="createCaseBtn" type="submit" class="btn btn-success btn-block">
+                            <span class="glyphicon glyphicon-check"></span> Next</button>
+                    </div>
+                </div>
+            }
+            </fieldset>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger pull-left" id="case-type-cancel" data-dismiss="modal">
+                <span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                <p>* Indicates Required Field</p>
+        </div>
+    </div>
+
+</div>
+
+

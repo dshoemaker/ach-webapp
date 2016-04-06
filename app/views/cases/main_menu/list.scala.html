@@ -1,0 +1,51 @@
+@(caseList: List[Reclamation])(caseForm: play.data.Form[BaseCase])
+
+@import views.html.common._
+@import models._
+
+@main("Tracker Menu") {
+
+
+    <div class="row btn-menu-container">
+        <button class="btn btn-success btn-menu inline-block-elmt" data-toggle="modal" data-target="#new_case_modal">
+            <span class="glyphicon glyphicon-plus"></span> Add New Case</button>
+        <button class="btn btn-success btn-menu inline-block-elmt" id="import-btn">
+            <span class="glyphicon glyphicon-import"></span> Import Nacha</button>
+        <div class="drop_zone_container inline-block-elmt">
+            <div class="drop_zone" id="drop_zone">Drop file here</div>
+            <output id="file_info"></output>
+        </div>
+
+        <button class="btn btn-success btn-menu inline-block-elmt col-right">
+            <span class="glyphicon glyphicon-tasks"></span> View <span class="glyphicon glyphicon-menu-down"></span></button>
+    </div>
+    <div class="panel panel-default">
+        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+            <li class="active"><a href="#dashboard" data-toggle="tab">Dashboard</a></li>
+            <li><a href="#search-menu" data-toggle="tab">Search</a></li>
+            <li><a href="#auditing" data-toggle="tab">Auditing</a></li>
+        </ul>
+        <div id="case-tab-content" class="tab-content">
+            <div class="tab-pane active" id="dashboard">
+            @dashboard(caseList)
+            </div>
+
+            <div class="tab-pane" id="search-menu">
+            @case_search_form()
+            </div>
+
+            <div class="tab-pane" id="auditing">
+            @audit_history()
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src='@routes.Assets.at("javascripts/main_menu_handler.js")'></script>
+
+}
+
+
+<div id="new_case_modal" class="modal fade" role="dialog">
+@cases.new_case_form.base_case_modal(caseForm)
+</div>
+

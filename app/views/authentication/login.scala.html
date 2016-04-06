@@ -1,0 +1,40 @@
+@(loginForm: play.data.Form[User])
+
+@import views.html.common.head_section
+@import helper._
+@import models._
+
+@implicitFieldConstructor = @{
+    b3.vertical.fieldConstructor
+}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    @head_section("Login")
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="well col-md-12">
+                    <div class="page-header">
+                        <h3>Login</h3>
+                    </div>
+                    <p>* Indicates Required Field</p>
+                    <fieldset>
+                    @b3.form(action = routes.SessionController.create()) {
+                        @b3.text(loginForm("email"), '_label -> "Email")
+                        @b3.text(loginForm("full_name"), '_label -> "Name *")
+                        @b3.radio(loginForm("access"), options = options(User.accessOptions()), '_label -> "Access Privilege * ", '_inline -> true )
+
+                        <button type="submit" class="btn btn-success btn-block">
+                            <span class="glyphicon glyphicon-check"></span> Login</button>
+                    }
+                    </fieldset>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,220 @@
+@(rec_case: Reclamation)
+
+<script type="text/javascript">$('.btn-action').tooltip();</script>
+
+<div class="panel panel-warning">
+    <div class="panel-heading">@rec_case.beneficiaryName<span class="pull-right">[Case @rec_case.id]</span></div>
+    <div class="panel-body">
+        <div class="panel-group" id="accordion">
+
+            <div class="panel panel-default">
+                <div class="case-view-collapsible"><h4 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse1">
+                        General Info:
+                    </a></h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th class="col-md-3" scope="row">Type:</th>
+                                        <td>@rec_case.caseType</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-3" scope="row">Subtype:</th>
+                                        <td>@rec_case.caseSubtype</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-3" scope="row">Watch Item:</th>
+                                        <td>@rec_case.watchItem</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-5">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th class="col-md-4" scope="row">Status:</th>
+                                        <td>@rec_case.status</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-4" scope="row">Date Created:</th>
+                                        <td>@rec_case.formatDate(rec_case.dateCreated)</td>
+                                    </tr>
+                                    @if(rec_case.status.getValueOr == "Closed") {
+                                        <tr>
+                                            <th class="col-md-4" scope="row">Date Closed:</th>
+                                            <td>@rec_case.formatDate(rec_case.dateClosed)</td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <th class="col-md-3" scope="row">Created By:</th>
+                                        <td>@rec_case.createdBy</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-2">
+                                <table class="table">
+                                    <tr>
+                                        <td>Edit Case</td>
+                                        <td><button type="button" class="btn-warning btn-action" data-toggle="tooltip" data-placement="top" data-container="body" title="Edit Case"
+                                        onclick="window.location='@routes.CaseController.editCase(rec_case.id)';">
+                                            <span class="glyphicon glyphicon-edit"></span></button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Delete Case</td>
+                                        <td><button type="button" class="btn-danger btn-action" data-toggle="tooltip" data-placement="top" data-container="body" title="Delete Case"
+                                        onclick="del('@routes.CaseController.deleteCase(rec_case.id)');">
+                                            <span class="glyphicon glyphicon-trash"></span></button></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="case-view-collapsible"><h4 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse2">
+                        Beneficiary Info:
+                    </a></h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th class="col-md-4" scope="row">Name:</th>
+                                        <td>@rec_case.beneficiaryName</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-4" scope="row">Account #:</th>
+                                        <td>@rec_case.beneficiaryAcctNumber</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-4" scope="row">SSN:</th>
+                                        <td>@rec_case.beneficiarySSN</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-4" scope="row">Customer ID:</th>
+                                        <td>@rec_case.beneficiaryCustId</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-7">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th class="col-md-4" scope="row">DoD:</th>
+                                        <td>@rec_case.formatDate(rec_case.dateOfDeath)</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-4" scope="row">Date Aware:</th>
+                                        <td>@rec_case.formatDate(rec_case.dateCBAware)</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-4" scope="row">Other Gov Benefits:</th>
+                                        <td>@rec_case.govBenefits</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="case-view-collapsible"><h4 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse3">
+                        Payment Info:
+                    </a></h4>
+                </div>
+                <div id="collapse3" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <table class="table table-bordered table-striped">
+                                    <th class="col-md-4">Effective Date</th>
+                                    <th>Amount</th>
+                                    @for(payment <- rec_case.paymentList) {
+                                        <tr>
+                                            <td>@rec_case.formatDate(payment.effectiveDate)</td>
+                                            <td>@{
+                                                "%.2f".format(payment.amount)
+                                            }</td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="case-view-collapsible"><h4 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse4">
+                        Disposition/Status Info:
+                    </a></h4>
+                </div>
+                <div id="collapse4" class="panel-collapse collapse in">
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th class="col-md-5" scope="row">Recovery Method:</th>
+                                        <td>@rec_case.recoveryMethod</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-5" scope="row">Full Recovery:</th>
+                                        <td>@rec_case.fullRecovery</td>
+                                    </tr>
+                                    @if(rec_case.status.getValueOr == "Closed") {
+                                        <tr>
+                                            <th class="col-md-5" scope="row">Date Closed:</th>
+                                            <td>@rec_case.formatDate(rec_case.dateClosed)</td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <th class="col-md-5" scope="row">Check #:</th>
+                                        <td>@rec_case.checkNumber</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-5" scope="row">Mailed To:</th>
+                                        <td>@rec_case.mailedTo</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-bordered table-striped">
+                                    <tr>
+                                        <th class="col-md-4" scope="row">Date Completed:</th>
+                                        <td>@rec_case.formatDate(rec_case.completedDate)</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-4" scope="row">Date Verified:</th>
+                                        <td>@rec_case.formatDate(rec_case.verifiedDate)</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-4" scope="row">Verified By:</th>
+                                        <td>@rec_case.verifiedBy</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th class="col-md-2" scope="row">Additional Notes:</th>
+                                <td>@rec_case.additionalNotes</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
